@@ -18,4 +18,6 @@ Window::Window() {
 
     plot->replot();
     plot->show();
+
+    setCentralWidget(plot);
 }
