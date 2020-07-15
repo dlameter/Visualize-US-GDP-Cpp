@@ -1,6 +1,11 @@
 #include "Window.h"
 #include <QApplication>
 
-int main() {
-    return 1;
+int main(int argc, char* argv[]) {
+    QApplication graphapp(argc, argv);
+
+    Window window;
+    window.show();
+
+    return graphapp.exec();
 }
