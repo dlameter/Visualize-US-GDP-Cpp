@@ -1,5 +1,4 @@
-#include <qwt/qwt_plot.h>
-
+#include "Window.h"
 #include <QApplication>
 
 int main() {
