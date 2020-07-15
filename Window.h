@@ -3,9 +3,11 @@
 
 #include "DataRetriever.h"
 #include <string>
-#include <QWidget>
+#include <qwt/qwt_plot.h>
+#include <qwt/qwt_plot_barchart.h>
+#include <QMainWindow>
 
-class Window : public QWidget {
+class Window : public QMainWindow {
 
     Q_OBJECT
 
@@ -13,10 +15,10 @@ public:
 
     Window();
 
-    ~Window();
-
 private:
     DataRetriever retriever;
+    QwtPlot* plot;
+    QwtPlotBarChart* plot_chart;
 };
 
 #endif
