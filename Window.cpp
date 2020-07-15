@@ -16,6 +16,9 @@ Window::Window() {
     plot_chart->setSamples(data);
     plot_chart->attach(plot);
 
+    plot->setTitle("United States GDP by year.");
+    plot->setAxisTitle(QwtPlot::Axis::yLeft, "GDP");
+    plot->setAxisTitle(QwtPlot::Axis::xBottom, "Year and Quarter");
     plot->replot();
     plot->show();
 
