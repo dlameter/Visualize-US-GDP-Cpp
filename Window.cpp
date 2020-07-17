@@ -36,6 +36,9 @@ Window::Window() {
     chart->addAxis(axisY, Qt::AlignLeft);
     series->attachAxis(axisY);
 
+    chart->legend()->show();
+    chart->legend()->setAlignment(Qt::AlignBottom);
+
     chart->show();
 
     chartview = new QtCharts::QChartView(chart);
