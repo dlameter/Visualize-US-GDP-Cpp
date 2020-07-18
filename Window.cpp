@@ -1,14 +1,21 @@
 #include "Window.h"
 #include <QVector>
+#include <string>
 
 Window::Window() {
+    std::string filename("US_GDP.csv");
+    retriever.retrieve_data(filename);
+
     QList<double> data;
-    data.push_back(100.13);
-    data.push_back(30.0);
-    data.push_back(24);
-    data.push_back(206);
-    data.push_back(328.3);
-    data.push_back(160.1);
+    double max = 0;
+    for (auto& elem : retriever.getY()) {
+        data.push_back(elem);
+
+        if (elem > max) {
+            max = elem;
+        }
+    }
+    max = max + (max / 10);
   
     QtCharts::QBarSet* set = new QtCharts::QBarSet("Numbers");
     set->append(data);
@@ -22,17 +29,14 @@ Window::Window() {
     chart->setAnimationOptions(QtCharts::QChart::SeriesAnimations);
 
     QtCharts::QBarCategoryAxis* axisX = new QtCharts::QBarCategoryAxis;
-    axisX->append("test");
-    axisX->append("test1");
-    axisX->append("test2");
-    axisX->append("test3");
-    axisX->append("test4");
-    axisX->append("test5");
+    for (auto& name : retriever.getX()) {
+        axisX->append(QString::fromStdString(name));
+    }
     chart->addAxis(axisX, Qt::AlignBottom);
     series->attachAxis(axisX);
 
     QtCharts::QValueAxis* axisY = new QtCharts::QValueAxis;
-    axisY->setRange(0, 350);
+    axisY->setRange(0, max);
     chart->addAxis(axisY, Qt::AlignLeft);
     series->attachAxis(axisY);
 
