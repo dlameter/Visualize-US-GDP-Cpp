@@ -28,6 +28,8 @@ void DataRetriever::retrieve_data(std::string& path) {
 
             x.push_back(cells[0]);
             y.push_back(std::stod(cells[1]));
+
+            // TODO: Handle exceptions thrown by stod
         }
 
         file.close();
