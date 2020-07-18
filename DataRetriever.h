@@ -6,6 +6,8 @@
 class DataRetriever {
     public:
         void retrieve_data(std::string& path);
+        std::vector<std::string> getX();
+        std::vector<double> getY();
     private:
         std::vector<std::string> x;
         std::vector<double> y;

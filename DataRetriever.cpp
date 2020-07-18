@@ -45,6 +45,14 @@ void DataRetriever::retrieve_data(std::string& path) {
     }
 }
 
+std::vector<std::string> DataRetriever::getX() {
+    return x;
+}
+
+std::vector<double> DataRetriever::getY() {
+    return y;
+}
+
 std::vector<std::string> DataRetriever::get_line_cells(std::istream& input) {
     std::vector<std::string> cells;
     std::string line;
