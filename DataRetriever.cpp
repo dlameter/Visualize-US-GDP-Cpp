@@ -26,6 +26,11 @@ void DataRetriever::retrieve_data(std::string& path) {
         while (!file.eof()) {
             cells = get_line_cells(file);
 
+            // If no cells were found on a line, it's likely and empty line or eof.
+            if (cells.empty()) {
+                break;
+            }
+
             x.push_back(cells[0]);
             y.push_back(std::stod(cells[1]));
 
