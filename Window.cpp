@@ -87,4 +87,19 @@ void Window::keepCallout() {
     m_tooltip = new Tooltip(m_chart);
 }
 
-void Window::tooltip(QPointF point, bool state) {}
+void Window::tooltip(QPointF point, bool state) {
+    if (m_tooltip == 0) {
+        m_tooltip = new Tooltip(m_chart);
+    }
+
+    if (state) {
+        m_tooltip->setText(QString("X: %1 \nY: %2 ").arg(point.x(), point.y()));
+        m_tooltip->setAnchor(point);
+        m_tooltip->setZValue(11);
+        m_tooltip->updateGeometry();
+        m_tooltip->show();
+    }
+    else {
+        m_tooltip->hide();
+    }
+}
