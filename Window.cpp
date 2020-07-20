@@ -100,7 +100,8 @@ void Window::tooltip(QPointF point, bool state) {
     }
 
     if (state) {
-        m_tooltip->setText(QString("X: %1 \nY: %2 ").arg(point.x()).arg(point.y()));
+        QDateTime date = QDateTime::fromMSecsSinceEpoch(point.x());
+        m_tooltip->setText(QString("X: %1 \nY: $%2 billion ").arg(date.toString("MM-yyyy")).arg(point.y()));
         m_tooltip->setAnchor(point);
         m_tooltip->setZValue(11);
         m_tooltip->updateGeometry();
