@@ -1,6 +1,7 @@
 #include "Window.h"
 #include "tooltip.h"
 #include <QtCharts/QChart>
+#include <QtCharts/QDateTimeAxis>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QValueAxis>
 #include <QtWidgets/QGraphicsScene>
@@ -26,7 +27,7 @@ Window::Window(QWidget* parent):
     QList<QPointF> data;
     double max = 0;
     for (int i = 0; i < (int) m_retriever.getY().size(); i++) {
-        data.push_back(QPointF(i, m_retriever.getY()[i]));
+        data.push_back(QPointF(m_retriever.stringToDate(m_retriever.getX()[i]).toMSecsSinceEpoch(), m_retriever.getY()[i]));
 
         if (m_retriever.getY()[i] > max) {
             max = m_retriever.getY()[i];
@@ -44,8 +45,8 @@ Window::Window(QWidget* parent):
     m_chart->setMinimumSize(640, 480);
     m_chart->setAnimationOptions(QChart::SeriesAnimations);
 
-    auto* axisX = new QValueAxis;
-    axisX->setRange(0, m_retriever.getY().size());
+    auto* axisX = new QDateTimeAxis;
+    axisX->setFormat("MM-yyyy");
     m_chart->addAxis(axisX, Qt::AlignBottom);
     series->attachAxis(axisX);
 
