@@ -61,6 +61,10 @@ Window::Window(QWidget* parent):
     m_chart->show();
     scene()->addItem(m_chart);
 
+    // hook up handlers
+    connect(series, &QLineSeries::clicked, this, &Window::keepTooltip);
+    connect(series, &QLineSeries::hovered, this, &Window::tooltip);
+
     this->setMouseTracking(true);
 }
 
@@ -82,9 +86,10 @@ void Window::mouseMoveEvent(QMouseEvent* event) {
     QGraphicsView::mouseMoveEvent(event);
 }
 
-void Window::keepCallout() {
+void Window::keepTooltip() {
     m_tooltips.push_back(m_tooltip);
     m_tooltip = new Tooltip(m_chart);
+    m_tooltip->hide();
 }
 
 void Window::tooltip(QPointF point, bool state) {
@@ -93,7 +98,7 @@ void Window::tooltip(QPointF point, bool state) {
     }
 
     if (state) {
-        m_tooltip->setText(QString("X: %1 \nY: %2 ").arg(point.x(), point.y()));
+        m_tooltip->setText(QString("X: %1 \nY: %2 ").arg(point.x()).arg(point.y()));
         m_tooltip->setAnchor(point);
         m_tooltip->setZValue(11);
         m_tooltip->updateGeometry();
