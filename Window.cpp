@@ -9,7 +9,11 @@
 #include <QVector>
 #include <string>
 
-Window::Window(QWidget* parent) {
+Window::Window(QWidget* parent): 
+    QGraphicsView(new QGraphicsScene, parent), 
+    m_chart(0), 
+    m_tooltip(0)
+{
     // setup graphics view
     setDragMode(QGraphicsView::NoDrag);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -60,7 +64,19 @@ Window::Window(QWidget* parent) {
     this->setMouseTracking(true);
 }
 
-void Window::resizeEvent(QResizeEvent* event) {}
+void Window::resizeEvent(QResizeEvent* event) {
+    if (scene()) {
+        scene()->setSceneRect(QRect(QPoint(0, 0), event->size()));
+        m_chart->resize(event->size());
+
+        const auto tooltips = m_tooltips;
+        for (Tooltip* tooltip : tooltips) {
+            tooltip->updateGeometry();
+        }
+    }
+
+    QGraphicsView::resizeEvent(event);
+}
 
 void Window::mouseMoveEvent(QMouseEvent* event) {}
 
