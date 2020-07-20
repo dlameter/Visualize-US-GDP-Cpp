@@ -6,32 +6,27 @@ Window::Window() {
     std::string filename("US_GDP.csv");
     retriever.retrieve_data(filename);
 
-    QList<double> data;
+    QList<QPointF> data;
     double max = 0;
-    for (auto& elem : retriever.getY()) {
-        data.push_back(elem);
+    for (int i = 0; i < (int) retriever.getY().size(); i++) {
+        data.push_back(QPointF(i, retriever.getY()[i]));
 
-        if (elem > max) {
-            max = elem;
+        if (retriever.getY()[i] > max) {
+            max = retriever.getY()[i];
         }
     }
     max = max + (max / 10);
-  
-    QtCharts::QBarSet* set = new QtCharts::QBarSet("Numbers");
-    set->append(data);
 
-    QtCharts::QBarSeries* series = new QtCharts::QBarSeries;
-    series->append(set);
+    QtCharts::QLineSeries* series = new QtCharts::QLineSeries;
+    series->append(data);
 
     QtCharts::QChart* chart = new QtCharts::QChart;
     chart->addSeries(series);
     chart->setTitle("United States GDP by year.");
     chart->setAnimationOptions(QtCharts::QChart::SeriesAnimations);
 
-    QtCharts::QBarCategoryAxis* axisX = new QtCharts::QBarCategoryAxis;
-    for (auto& name : retriever.getX()) {
-        axisX->append(QString::fromStdString(name));
-    }
+    auto* axisX = new QtCharts::QValueAxis;
+    axisX->setRange(0, retriever.getY().size());
     chart->addAxis(axisX, Qt::AlignBottom);
     series->attachAxis(axisX);
 
