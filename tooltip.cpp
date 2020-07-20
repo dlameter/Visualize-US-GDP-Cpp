@@ -1,6 +1,11 @@
 #include "tooltip.h"
+#include <QtGui/QPainter>
+#include <QtGui/QFontMetrics>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
+#include <QtGui/QMouseEvent>
+#include <QtCharts/QChart>
 
-Tooltip::Tooltip(QChart* parent) :
+Tooltip::Tooltip(QChart* parent):
     QGraphicsItem(parent),
     chart(parent)
 {
@@ -21,15 +26,13 @@ void Tooltip::setAnchor(QPointF anchor) {
 
 void Tooltip::updateGeometry() {
     prepareGeometryChange();
-    setPos(this->chart->mapToPosition(this->anchor) + QPoint(10, -50);
+    setPos(this->chart->mapToPosition(this->anchor) + QPoint(10, -50));
 }
 
-QRectF boundingRect() const {}
+QRectF Tooltip::boundingRect() const {}
 
-void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {}
+void Tooltip::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {}
 
-protected:
+void Tooltip::mousePressEvent(QGraphicsSceneMouseEvent* event) {}
 
-void mousePressEvent(QGraphicsSceneMouseEvent* event);
-
-void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
+void Tooltip::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {}
