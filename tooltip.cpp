@@ -29,7 +29,15 @@ void Tooltip::updateGeometry() {
     setPos(this->chart->mapToPosition(this->anchor) + QPoint(10, -50));
 }
 
-QRectF Tooltip::boundingRect() const {}
+QRectF Tooltip::boundingRect() const {
+    QPointF point = mapFromParent(this->chart->mapToPosition(this->anchor));
+    QRectF boundingRect;
+    boundingRect.setLeft(qMin(this->rect.left(), point.x()));
+    boundingRect.setRight(qMax(this->rect.right(), point.x()));
+    boundingRect.setTop(qMin(this->rect.top(), point.y()));
+    boundingRect.setBottom(qMax(this->rect.bottom(), point.y()));
+    return boundingRect;
+}
 
 void Tooltip::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {}
 
