@@ -4,6 +4,8 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
 
 void DataRetriever::retrieve_data(std::string& path) {
     std::ifstream file(path);
@@ -51,6 +53,18 @@ std::vector<std::string> DataRetriever::getX() {
 
 std::vector<double> DataRetriever::getY() {
     return y;
+}
+
+QDate DataRetriever::stringToDate(const std::string& string) {
+    int year = 0, month = 0, day = 0;
+
+    QRegularExpression re("(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)");
+    auto match = re.match(QString::fromStdString(string));
+    year = match.captured(1).toInt();
+    month = match.captured(2).toInt();
+    day = match.captured(3).toInt();
+
+    return QDate(year, month, day);
 }
 
 std::vector<std::string> DataRetriever::get_line_cells(std::istream& input) {

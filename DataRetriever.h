@@ -2,12 +2,17 @@
 #define DATA_RETRIEVER_H
 #include <string>
 #include <vector>
+#include <QDate>
+
+QT_USE_NAMESPACE
 
 class DataRetriever {
     public:
         void retrieve_data(std::string& path);
         std::vector<std::string> getX();
         std::vector<double> getY();
+        QDate stringToDate(const std::string& string);
+
     private:
         std::vector<std::string> x;
         std::vector<double> y;
