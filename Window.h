@@ -24,7 +24,7 @@ class Window : public QGraphicsView {
 
 public:
 
-    Window(QWidjet* parent = 0);
+    Window(QWidget* parent = 0);
 
 protected:
     void resizeEvent(QResizeEvent* event);
