@@ -78,8 +78,13 @@ void Window::resizeEvent(QResizeEvent* event) {
     QGraphicsView::resizeEvent(event);
 }
 
-void Window::mouseMoveEvent(QMouseEvent* event) {}
+void Window::mouseMoveEvent(QMouseEvent* event) {
+    QGraphicsView::mouseMoveEvent(event);
+}
 
-void Window::keepCallout() {}
+void Window::keepCallout() {
+    m_tooltips.push_back(m_tooltip);
+    m_tooltip = new Tooltip(m_chart);
+}
 
 void Window::tooltip(QPointF point, bool state) {}
