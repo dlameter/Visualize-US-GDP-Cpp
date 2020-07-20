@@ -1,47 +1,69 @@
 #include "Window.h"
+#include "tooltip.h"
+#include <QtCharts/QChart>
+#include <QtCharts/QLineSeries>
+#include <QtCharts/QValueAxis>
+#include <QtWidgets/QGraphicsScene>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QResizeEvent>
 #include <QVector>
 #include <string>
 
-Window::Window() {
+Window::Window(QWidget* parent) {
+    // setup graphics view
+    setDragMode(QGraphicsView::NoDrag);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    // read data from file
     std::string filename("US_GDP.csv");
-    retriever.retrieve_data(filename);
+    m_retriever.retrieve_data(filename);
 
     QList<QPointF> data;
     double max = 0;
-    for (int i = 0; i < (int) retriever.getY().size(); i++) {
-        data.push_back(QPointF(i, retriever.getY()[i]));
+    for (int i = 0; i < (int) m_retriever.getY().size(); i++) {
+        data.push_back(QPointF(i, m_retriever.getY()[i]));
 
-        if (retriever.getY()[i] > max) {
-            max = retriever.getY()[i];
+        if (m_retriever.getY()[i] > max) {
+            max = m_retriever.getY()[i];
         }
     }
     max = max + (max / 10);
 
-    QtCharts::QLineSeries* series = new QtCharts::QLineSeries;
+    // build chart
+    QLineSeries* series = new QLineSeries;
     series->append(data);
 
-    QtCharts::QChart* chart = new QtCharts::QChart;
-    chart->addSeries(series);
-    chart->setTitle("United States GDP by year.");
-    chart->setAnimationOptions(QtCharts::QChart::SeriesAnimations);
+    m_chart = new QtCharts::QChart;
+    m_chart->addSeries(series);
+    m_chart->setTitle("United States GDP by year.");
+    m_chart->setMinimumSize(640, 480);
+    m_chart->setAnimationOptions(QChart::SeriesAnimations);
 
-    auto* axisX = new QtCharts::QValueAxis;
-    axisX->setRange(0, retriever.getY().size());
-    chart->addAxis(axisX, Qt::AlignBottom);
+    auto* axisX = new QValueAxis;
+    axisX->setRange(0, m_retriever.getY().size());
+    m_chart->addAxis(axisX, Qt::AlignBottom);
     series->attachAxis(axisX);
 
-    QtCharts::QValueAxis* axisY = new QtCharts::QValueAxis;
+    QValueAxis* axisY = new QValueAxis;
     axisY->setRange(0, max);
-    chart->addAxis(axisY, Qt::AlignLeft);
+    m_chart->addAxis(axisY, Qt::AlignLeft);
     series->attachAxis(axisY);
 
-    chart->legend()->show();
-    chart->legend()->setAlignment(Qt::AlignBottom);
+    m_chart->setAcceptHoverEvents(true);
+    m_chart->legend()->show();
+    m_chart->legend()->setAlignment(Qt::AlignBottom);
 
-    chart->show();
+    m_chart->show();
+    scene()->addItem(m_chart);
 
-    chartview = new QtCharts::QChartView(chart);
-
-    setCentralWidget(chartview);
-    resize(420, 300);
+    this->setMouseTracking(true);
 }
+
+void Window::resizeEvent(QResizeEvent* event) {}
+
+void Window::mouseMoveEvent(QMouseEvent* event) {}
+
+void Window::keepCallout() {}
+
+void Window::tooltip(QPointF point, bool state) {}
