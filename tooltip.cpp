@@ -8,7 +8,14 @@ Tooltip::Tooltip(QChart* parent) :
 {
 }
 
-void Tooltip::setText(const QString& text) {}
+void Tooltip::setText(const QString& text) {
+    this->text = text;
+    QFontMetrics metrics(font);
+    this->textRect = metrics.boundingRect(QRect(0, 0, 150, 150), Qt::AlignLeft, this->text);
+    this->textRect.translate(5, 5);
+    prepareGeometryChange();
+    this->rect = this->textRect.adjusted(-5, -5, 5, 5);
+}
 
 void Tooltip::setAnchor(QPointF anchor) {
     this->anchor = anchor;
