@@ -1,5 +1,6 @@
 #ifndef TOOLTIP_H
 #define TOOLTIP_H
+
 #include <QtCharts/QChartGlobal>
 #include <QtWidgets/QGraphicsItem>
 #include <QtGui/QFont>
@@ -14,9 +15,7 @@ QT_CHARTS_END_NAMESPACE
 
 QT_CHARTS_USE_NAMESPACE
 
-class Tooltip : QGraphicsItem {
-    Q_OBJECT
-
+class Tooltip : public QGraphicsItem {
     public:
         Tooltip(QChart* parent);
 
