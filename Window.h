@@ -31,7 +31,7 @@ protected:
     void mouseMoveEvent(QMouseEvent* event);
 
 public slots:
-    void keepCallout();
+    void keepTooltip();
     void tooltip(QPointF point, bool state);
 
 private:
