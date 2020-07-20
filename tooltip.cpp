@@ -7,7 +7,9 @@ Tooltip::Tooltip(QChart* parent) {
 
 void Tooltip::setText(const QString& text) {}
 
-void Tooltip::setAnchor(QPointF anchor) {}
+void Tooltip::setAnchor(QPointF anchor) {
+    this->anchor = anchor;
+}
 
 void Tooltip::updateGeometry() {}
 
