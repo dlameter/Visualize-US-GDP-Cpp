@@ -18,7 +18,7 @@ class Tooltip : QGraphicsItem {
     Q_OBJECT
 
     public:
-        Callout(QChart* parent);
+        Tooltip(QChart* parent);
 
         void setText(const QString &text);
         void setAnchor(QPointF anchor);
