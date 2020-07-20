@@ -41,6 +41,16 @@ QRectF Tooltip::boundingRect() const {
 
 void Tooltip::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {}
 
-void Tooltip::mousePressEvent(QGraphicsSceneMouseEvent* event) {}
+void Tooltip::mousePressEvent(QGraphicsSceneMouseEvent* event) {
+    event->setAccepted(true);
+}
 
-void Tooltip::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {}
+void Tooltip::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
+    if (event->buttons() & Qt::LeftButton) {
+        setPos(mapToParent(event->pos() - event->buttonDownPos(Qt::LeftButton)));
+        event->setAccepted(true);
+    }
+    else {
+        event->setAccepted(false);
+    }
+}
