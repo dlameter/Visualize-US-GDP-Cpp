@@ -7,6 +7,9 @@
 #include <QtWidgets/QGraphicsView>
 
 QT_BEGIN_NAMESPACE
+class QGraphicsScene;
+class QMouseEvent;
+class QResizeEvent;
 QT_END_NAMESPACE
 
 QT_CHARTS_BEGIN_NAMESPACE
@@ -22,6 +25,10 @@ class Window : public QGraphicsView {
 public:
 
     Window(QWidjet* parent = 0);
+
+protected:
+    void resizeEvent(QResizeEvent* event);
+    void mouseMoveEvent(QMouseEvent* event);
 
 public slots:
     void keepCallout();
