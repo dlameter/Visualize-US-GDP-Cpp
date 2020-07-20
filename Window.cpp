@@ -48,11 +48,15 @@ Window::Window(QWidget* parent):
     auto* axisX = new QDateTimeAxis;
     axisX->setFormat("yyyy");
     axisX->setTickCount(10);
+    axisX->setTitleText("Year");
     m_chart->addAxis(axisX, Qt::AlignBottom);
     series->attachAxis(axisX);
 
     QValueAxis* axisY = new QValueAxis;
     axisY->setRange(0, max);
+    axisY->setLabelFormat("$%.0f");
+    axisY->setTickCount(8);
+    axisY->setTitleText("Billion dollar(s) USD");
     m_chart->addAxis(axisY, Qt::AlignLeft);
     series->attachAxis(axisY);
 
