@@ -2,7 +2,10 @@
 
 public:
 
-Tooltip::Tooltip(QChart* parent) {
+Tooltip::Tooltip(QChart* parent) :
+    QGraphicsItem(parent),
+    chart(parent)
+{
 }
 
 void Tooltip::setText(const QString& text) {}
