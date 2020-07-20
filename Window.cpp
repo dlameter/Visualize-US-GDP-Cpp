@@ -46,7 +46,8 @@ Window::Window(QWidget* parent):
     m_chart->setAnimationOptions(QChart::SeriesAnimations);
 
     auto* axisX = new QDateTimeAxis;
-    axisX->setFormat("MM-yyyy");
+    axisX->setFormat("yyyy");
+    axisX->setTickCount(10);
     m_chart->addAxis(axisX, Qt::AlignBottom);
     series->attachAxis(axisX);
 
