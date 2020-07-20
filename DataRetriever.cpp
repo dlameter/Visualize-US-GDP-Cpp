@@ -55,7 +55,7 @@ std::vector<double> DataRetriever::getY() {
     return y;
 }
 
-QDate DataRetriever::stringToDate(const std::string& string) {
+QDateTime DataRetriever::stringToDate(const std::string& string) {
     int year = 0, month = 0, day = 0;
 
     QRegularExpression re("(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)");
@@ -64,7 +64,9 @@ QDate DataRetriever::stringToDate(const std::string& string) {
     month = match.captured(2).toInt();
     day = match.captured(3).toInt();
 
-    return QDate(year, month, day);
+    QDateTime date;
+    date.setDate(QDate(year, month, day));
+    return date;
 }
 
 std::vector<std::string> DataRetriever::get_line_cells(std::istream& input) {
