@@ -21,7 +21,10 @@ void Tooltip::setAnchor(QPointF anchor) {
     this->anchor = anchor;
 }
 
-void Tooltip::updateGeometry() {}
+void Tooltip::updateGeometry() {
+    prepareGeometryChange();
+    setPos(this->chart->mapToPosition(this->anchor) + QPoint(10, -50);
+}
 
 QRectF boundingRect() const {}
 
