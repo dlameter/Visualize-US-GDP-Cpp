@@ -1,7 +1,5 @@
 #include "tooltip.h"
 
-public:
-
 Tooltip::Tooltip(QChart* parent) :
     QGraphicsItem(parent),
     chart(parent)
