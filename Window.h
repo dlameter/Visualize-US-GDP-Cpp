@@ -14,6 +14,7 @@ QT_END_NAMESPACE
 
 QT_CHARTS_BEGIN_NAMESPACE
 class QChart;
+class QLineSeries;
 QT_CHARTS_END_NAMESPACE
 
 QT_USE_NAMESPACE
@@ -39,6 +40,15 @@ private:
     QChart* m_chart;
     Tooltip* m_tooltip;
     QList<Tooltip*> m_tooltips;
+
+    void setupGraphicsView();
+    void buildAndShowChart(const std::string& filename);
+    int readDataFromFileAndReturnMax(QLineSeries* series, const std::string& filename);
+    void setupChart(QLineSeries* series);
+    void addXAxis(QLineSeries* series);
+    void addYAxis(QLineSeries* series, int max);
+    void setupTooltip(QLineSeries* series);
+    void showChart();
 };
 
 #endif

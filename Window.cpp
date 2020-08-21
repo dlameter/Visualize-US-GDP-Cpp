@@ -15,19 +15,42 @@ Window::Window(QWidget* parent):
     m_chart(0), 
     m_tooltip(0)
 {
-    // setup graphics view
+    setupGraphicsView();
+    buildAndShowChart("US_GDP.csv");
+    this->setMouseTracking(true);
+}
+
+void Window::setupGraphicsView() {
     setDragMode(QGraphicsView::NoDrag);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+}
 
-    // read data from file
-    std::string filename("US_GDP.csv");
+void Window::buildAndShowChart(const std::string& filename) {
+    m_chart = new QtCharts::QChart;
+
+    QLineSeries* series = new QLineSeries;
+    int max = readDataFromFileAndReturnMax(series, filename);
+
+    setupChart(series);
+    addXAxis(series);
+    addYAxis(series, max);
+    setupTooltip(series);
+    showChart();
+}
+
+int Window::readDataFromFileAndReturnMax(QLineSeries* series, const std::string& filename) {
     m_retriever.retrieve_data(filename);
 
     QList<QPointF> data;
     double max = 0;
     for (int i = 0; i < (int) m_retriever.getY().size(); i++) {
-        data.push_back(QPointF(m_retriever.stringToDate(m_retriever.getX()[i]).toMSecsSinceEpoch(), m_retriever.getY()[i]));
+        data.push_back(
+                QPointF(
+                    m_retriever.stringToDate(m_retriever.getX()[i]).toMSecsSinceEpoch(), 
+                    m_retriever.getY()[i]
+                )
+            );
 
         if (m_retriever.getY()[i] > max) {
             max = m_retriever.getY()[i];
@@ -35,43 +58,50 @@ Window::Window(QWidget* parent):
     }
     max = max + (max / 10);
 
-    // build chart
-    QLineSeries* series = new QLineSeries;
     series->append(data);
+    return max;
+}
 
-    m_chart = new QtCharts::QChart;
+void Window::setupChart(QLineSeries* series) {
     m_chart->addSeries(series);
     m_chart->setTitle("United States GDP by year.");
     m_chart->setMinimumSize(640, 480);
     m_chart->setAnimationOptions(QChart::SeriesAnimations);
+    m_chart->setAcceptHoverEvents(true);
+    m_chart->legend()->show();
+    m_chart->legend()->setAlignment(Qt::AlignBottom);
+}
 
+
+void Window::addXAxis(QLineSeries* series) {
     auto* axisX = new QDateTimeAxis;
     axisX->setFormat("yyyy");
     axisX->setTickCount(10);
     axisX->setTitleText("Year");
+
     m_chart->addAxis(axisX, Qt::AlignBottom);
     series->attachAxis(axisX);
+}
 
-    QValueAxis* axisY = new QValueAxis;
+void Window::addYAxis(QLineSeries* series, int max) {
+    auto* axisY = new QValueAxis;
     axisY->setRange(0, max);
     axisY->setLabelFormat("$%.0f");
     axisY->setTickCount(8);
     axisY->setTitleText("Billion dollar(s) USD");
+
     m_chart->addAxis(axisY, Qt::AlignLeft);
     series->attachAxis(axisY);
+}
 
-    m_chart->setAcceptHoverEvents(true);
-    m_chart->legend()->show();
-    m_chart->legend()->setAlignment(Qt::AlignBottom);
-
-    m_chart->show();
-    scene()->addItem(m_chart);
-
-    // hook up handlers
+void Window::setupTooltip(QLineSeries* series) {
     connect(series, &QLineSeries::clicked, this, &Window::keepTooltip);
     connect(series, &QLineSeries::hovered, this, &Window::tooltip);
+}
 
-    this->setMouseTracking(true);
+void Window::showChart() {
+    m_chart->show();
+    scene()->addItem(m_chart);
 }
 
 void Window::resizeEvent(QResizeEvent* event) {
