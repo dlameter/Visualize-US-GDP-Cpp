@@ -91,6 +91,10 @@ void Tooltip::modifyPathWithAnchorCorner(QPainterPath& path, const QPointF& poin
     path = path.simplified();
 }
 
+bool Tooltip::pointAbove(const QPointF& point) {
+    return point.x() <= this->rect.left();
+}
+
 void Tooltip::mousePressEvent(QGraphicsSceneMouseEvent* event) {
     event->setAccepted(true);
 }
