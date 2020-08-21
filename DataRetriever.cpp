@@ -7,7 +7,7 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 
-void DataRetriever::retrieve_data(std::string& path) {
+void DataRetriever::retrieve_data(const std::string& path) {
     std::ifstream file(path);
 
     if (file.is_open()) {

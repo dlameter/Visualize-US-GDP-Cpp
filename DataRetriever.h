@@ -8,7 +8,7 @@ QT_USE_NAMESPACE
 
 class DataRetriever {
     public:
-        void retrieve_data(std::string& path);
+        void retrieve_data(const std::string& path);
         std::vector<std::string> getX();
         std::vector<double> getY();
         QDateTime stringToDate(const std::string& string);
