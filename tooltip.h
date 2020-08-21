@@ -42,6 +42,9 @@ class Tooltip : public QGraphicsItem {
         QPointF firstPointOnPerimeter(const QPointF& point);
         QPointF secondPointOnPerimeter(const QPointF& point);
         QPointF pointOnPerimeter(const QPointF& point, int modifier1, int modifier2);
+        QPointF nearestCorner(const QPointF& anchor);
+        bool cornerCase(const QPointF& anchor);
+        bool vertical(const QPointF& anchor, const QPointF& corner);
         bool pointAbove(const QPointF& point);
         bool pointAboveCenter(const QPointF& point);
         bool pointBelow(const QPointF& point);

@@ -56,39 +56,53 @@ void Tooltip::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, Q
 }
 
 void Tooltip::modifyPathWithAnchorCorner(QPainterPath& path, const QPointF& point) {
-    QPointF point1, point2;
-
-    // establish the position of the anchor point in relation to m_rect
-    bool above = point.y() <= this->rect.top();
-    bool aboveCenter = point.y() > this->rect.top() && point.y() <= this->rect.center().y();
-    bool belowCenter = point.y() > this->rect.center().y() && point.y() <= this->rect.bottom();
-    bool below = point.y() > this->rect.bottom();
-
-    bool onLeft = point.x() <= this->rect.left();
-    bool leftOfCenter = point.x() > this->rect.left() && point.x() <= this->rect.center().x();
-    bool rightOfCenter = point.x() > this->rect.center().x() && point.x() <= this->rect.right();
-    bool onRight = point.x() > this->rect.right();
-
-    // get the nearest m_rect corner.
-    qreal x = (onRight + rightOfCenter) * this->rect.width();
-    qreal y = (below + belowCenter) * this->rect.height();
-    bool cornerCase = (above && onLeft) || (above && onRight) || (below && onLeft) || (below && onRight);
-    bool vertical = qAbs(point.x() - x) > qAbs(point.y() - y);
-
-    qreal x1 = x + leftOfCenter * 10 - rightOfCenter * 20 + cornerCase * !vertical * (onLeft * 10 - onRight * 20);
-    qreal y1 = y + aboveCenter * 10 - belowCenter * 20 + cornerCase * vertical * (above * 10 - below * 20);;
-    point1.setX(x1);
-    point1.setY(y1);
-
-    qreal x2 = x + leftOfCenter * 20 - rightOfCenter * 10 + cornerCase * !vertical * (onLeft * 20 - onRight * 10);;
-    qreal y2 = y + aboveCenter * 20 - belowCenter * 10 + cornerCase * vertical * (above * 20 - below * 10);;
-    point2.setX(x2);
-    point2.setY(y2);
+    QPointF point1 = firstPointOnPerimeter(point);
+    QPointF point2 = secondPointOnPerimeter(point);
 
     path.moveTo(point1);
     path.lineTo(point);
     path.lineTo(point2);
     path = path.simplified();
+}
+
+QPointF Tooltip::firstPointOnPerimeter(const QPointF& point) {
+    return pointOnPerimeter(point, 10, 20);
+}
+
+QPointF Tooltip::secondPointOnPerimeter(const QPointF& point) {
+    return pointOnPerimeter(point, 20, 10);
+}
+
+QPointF Tooltip::pointOnPerimeter(const QPointF& point, int modifier1, int modifier2) {
+    QPointF corner = nearestCorner(point);
+
+    qreal x = corner.x() + pointLeftOfCenter(point) * modifier1
+        - pointRightOfCenter(point) * modifier2
+        + cornerCase(point) * !vertical(point, corner)
+        * (pointOnLeft(point) * modifier1 - pointOnRight(point) * modifier2);
+    qreal y = corner.y() + pointAboveCenter(point) * modifier1
+        - pointBelowCenter(point) * modifier2
+        + cornerCase(point) * vertical(point, corner)
+        * (pointAbove(point) * modifier1 - pointBelow(point) * modifier2);
+
+    return QPointF(x, y);
+}
+
+QPointF Tooltip::nearestCorner(const QPointF& anchor) {
+    qreal x = (pointOnRight(anchor) + pointRightOfCenter(anchor)) * this->rect.width();
+    qreal y = (pointBelow(anchor) + pointBelowCenter(anchor)) * this->rect.height();
+    return QPointF(x, y);
+}
+
+bool Tooltip::cornerCase(const QPointF& anchor) {
+    return (pointAbove(anchor) && pointOnLeft(anchor)) || 
+        (pointAbove(anchor) && pointOnRight(anchor)) || 
+        (pointBelow(anchor) && pointOnLeft(anchor)) || 
+        (pointBelow(anchor) && pointOnRight(anchor));
+}
+
+bool Tooltip::vertical(const QPointF& anchor, const QPointF& corner) {
+    return qAbs(anchor.x() - corner.x()) > qAbs(anchor.y() - corner.y());
 }
 
 bool Tooltip::pointAbove(const QPointF& point) {
