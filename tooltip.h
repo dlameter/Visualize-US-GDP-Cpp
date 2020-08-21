@@ -39,6 +39,9 @@ class Tooltip : public QGraphicsItem {
         QChart* chart;
 
         void modifyPathWithAnchorCorner(QPainterPath& path, const QPointF& point);
+        QPointF firstPointOnPerimeter(const QPointF& point);
+        QPointF secondPointOnPerimeter(const QPointF& point);
+        QPointF pointOnPerimeter(const QPointF& point, int modifier1, int modifier2, bool invertVertical);
         bool pointAbove(const QPointF& point);
         bool pointAboveCenter(const QPointF& point);
         bool pointBelow(const QPointF& point);
