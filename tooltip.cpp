@@ -92,7 +92,35 @@ void Tooltip::modifyPathWithAnchorCorner(QPainterPath& path, const QPointF& poin
 }
 
 bool Tooltip::pointAbove(const QPointF& point) {
+    return point.y() <= this->rect.top();
+}
+
+bool Tooltip::pointAboveCenter(const QPointF& point) {
+    return point.y() > this->rect.top() && point.y() <= this->rect.center().y();
+}
+
+bool Tooltip::pointBelow(const QPointF& point) {
+    return point.y() > this->rect.bottom();
+}
+
+bool Tooltip::pointBelowCenter(const QPointF& point) {
+    return point.y() > this->rect.center().y() && point.y() <= this->rect.bottom();
+}
+
+bool Tooltip::pointOnLeft(const QPointF& point) {
     return point.x() <= this->rect.left();
+}
+
+bool Tooltip::pointLeftOfCenter(const QPointF& point) {
+    return point.x() > this->rect.left() && point.x() <= this->rect.center().x(); 
+}
+
+bool Tooltip::pointOnRight(const QPointF& point) {
+    return point.x() > this->rect.right();
+}
+
+bool Tooltip::pointRightOfCenter(const QPointF& point) {
+    return point.x() > this->rect.center().x() && point.x() <= this->rect.right();
 }
 
 void Tooltip::mousePressEvent(QGraphicsSceneMouseEvent* event) {
