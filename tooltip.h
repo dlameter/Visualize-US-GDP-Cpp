@@ -37,6 +37,8 @@ class Tooltip : public QGraphicsItem {
         QPointF anchor;
         QFont font;
         QChart* chart;
+
+        void modifyPathWithAnchorCorner(QPainterPath& path, const QPointF& point);
 };
 
 #endif
