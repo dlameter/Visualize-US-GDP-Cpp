@@ -17,6 +17,8 @@ class DataRetriever {
         std::vector<std::string> x;
         std::vector<double> y;
 
+        void handleFirstLine(std::ifstream& file);
+        void readInRestOfFile(std::ifstream& file);
         std::vector<std::string> get_line_cells(std::istream& input);
 };
 
